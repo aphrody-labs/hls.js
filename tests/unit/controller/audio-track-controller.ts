@@ -224,10 +224,9 @@ describe('AudioTrackController', function () {
     });
   });
 
-  it('should select audioGroupId and trigger AUDIO_TRACK_SWITCHING', function (done) {
-    hls.on(Hls.Events.AUDIO_TRACK_SWITCHING, (event, data) => {
-      done();
-    });
+  it('should select audioGroupId and trigger AUDIO_TRACK_SWITCHING', function () {
+    const audioTrackSwitchingCallback = sinon.spy();
+    hls.on(Hls.Events.AUDIO_TRACK_SWITCHING, audioTrackSwitchingCallback);
 
     const newLevelInfo = hls.levels[0];
     const audioGroups = newLevelInfo.audioGroups;
@@ -240,7 +239,8 @@ describe('AudioTrackController', function () {
     audioTrackController.audioTrack = 2;
 
     // current track name
-    const audioTrackName = tracks[audioTrackController.audioTrack].name;
+    const audioTrackName =
+      audioTrackController.audioTracks[audioTrackController.audioTrack].name;
 
     audioTrackController.onManifestParsed(Events.MANIFEST_PARSED, {
       audioTracks: tracks,
@@ -248,12 +248,13 @@ describe('AudioTrackController', function () {
 
     // group has switched
     expect(audioGroups).to.include(
-      tracks[audioTrackController.audioTrack].groupId,
+      audioTrackController.audioTracks[audioTrackController.audioTrack].groupId,
     );
     // name is still the same
-    expect(tracks[audioTrackController.audioTrack].name).to.equal(
-      audioTrackName,
-    );
+    expect(
+      audioTrackController.audioTracks[audioTrackController.audioTrack].name,
+    ).to.equal(audioTrackName);
+    expect(audioTrackSwitchingCallback).to.have.been.calledTwice;
   });
 
   it('should always switch tracks when audioTrack is set to a valid index', function () {
@@ -341,10 +342,9 @@ describe('AudioTrackController', function () {
   });
 
   describe('onLevelLoading', function () {
-    it('should reselect the current track and trigger AUDIO_TRACK_SWITCHING eventually', function (done) {
-      hls.on(Hls.Events.AUDIO_TRACK_SWITCHING, (event, data) => {
-        done();
-      });
+    it('should reselect the current track and trigger AUDIO_TRACK_SWITCHING eventually', function () {
+      const audioTrackSwitchingCallback = sinon.spy();
+      hls.on(Hls.Events.AUDIO_TRACK_SWITCHING, audioTrackSwitchingCallback);
 
       const levelLoadedEvent = {
         level: 0,
@@ -360,7 +360,8 @@ describe('AudioTrackController', function () {
       audioTrackController.audioTrack = 2;
 
       // current track name
-      const audioTrackName = tracks[audioTrackController.audioTrack].name;
+      const audioTrackName =
+        audioTrackController.audioTracks[audioTrackController.audioTrack].name;
 
       audioTrackController.onLevelLoading(
         Events.LEVEL_LOADING,
@@ -369,12 +370,14 @@ describe('AudioTrackController', function () {
 
       // group has switched
       expect(audioGroups).to.include(
-        tracks[audioTrackController.audioTrack].groupId,
+        audioTrackController.audioTracks[audioTrackController.audioTrack]
+          .groupId,
       );
       // name is still the same
-      expect(tracks[audioTrackController.audioTrack].name).to.equal(
-        audioTrackName,
-      );
+      expect(
+        audioTrackController.audioTracks[audioTrackController.audioTrack].name,
+      ).to.equal(audioTrackName);
+      expect(audioTrackSwitchingCallback).to.have.been.calledTwice;
     });
 
     it('should load audio tracks with a url', function () {

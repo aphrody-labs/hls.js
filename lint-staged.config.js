@@ -18,8 +18,8 @@ module.exports = async (allStagedFiles) => {
 
   return [
     eslintFiles.length &&
-      `eslint --cache --fix ${eslintFiles.map(addQuotes).join(' ')}`,
+      `bun scripts/bun-run.js eslint --cache --fix ${eslintFiles.map(addQuotes).join(' ')}`,
     prettierFiles.length &&
-      `prettier --cache --write ${prettierFiles.map(addQuotes).join(' ')}`,
+      `bun scripts/bun-run.js prettier --cache --write ${prettierFiles.map(addQuotes).join(' ')}`,
   ].filter(Boolean);
 };

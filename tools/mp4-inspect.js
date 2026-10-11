@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
 /**
  * @module {MP4Inspect}
@@ -699,8 +699,8 @@ if (!global && !process) {
   return;
 }
 
-var fs = require('fs');
-var path = require('path');
+var fs = require('node:fs');
+var path = require('node:path');
 
 var argsOffset = 0;
 

@@ -1,77 +1,9 @@
 {
-  "name": "hls.js",
-  "license": "Apache-2.0",
-  "description": "JavaScript HLS client using MediaSourceExtension",
-  "homepage": "https://github.com/video-dev/hls.js",
   "authors": "Guillaume du Pontavice <g.du.pontavice@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/video-dev/hls.js"
-  },
   "bugs": {
     "url": "https://github.com/video-dev/hls.js/issues"
   },
-  "main": "./dist/hls.js",
-  "module": "./dist/hls.mjs",
-  "types": "./dist/hls.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/hls.mjs",
-      "require": "./dist/hls.js"
-    },
-    "./light": {
-      "import": "./dist/hls.light.mjs",
-      "require": "./dist/hls.light.js"
-    },
-    "./dist/*": "./dist/*",
-    "./package.json": "./package.json"
-  },
-  "files": [
-    "dist/**/*",
-    "src/**/*"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "build": "rollup --config && npm run build:types",
-    "build:ci": "rollup --config && tsc --build tsconfig-lib.json && api-extractor run && npm run build:copy-types && es-check",
-    "build:debug": "rollup --config --configType full --configType demo",
-    "build:watch": "rollup --config --configType full --configType demo --watch",
-    "build:types": "tsc --build tsconfig-lib.json && api-extractor run --local && npm run build:copy-types",
-    "build:copy-types": "cp ./dist/hls.d.ts ./dist/hls.d.mts && cp ./dist/hls.d.ts ./dist/hls.js.d.ts",
-    "dev": "run-p build:watch serve",
-    "serve": "http-server -o /demo .",
-    "size": "node ./scripts/dist-size.js",
-    "size:check": "node ./scripts/dist-size.js --check",
-    "docs": "doctoc ./docs/API.md && api-documenter markdown -i api-extractor -o api-extractor/api-documenter && rm api-extractor/api-documenter/index.md && npm run docs-md-to-html",
-    "docs-md-to-html": "generate-md --layout github --input api-extractor/api-documenter --output api-docs",
-    "lint": "eslint --cache src/ tests/ --ext .js --ext .ts",
-    "lint:fix": "npm run lint -- --fix",
-    "lint:quiet": "npm run lint -- --quiet",
-    "lint:staged": "lint-staged",
-    "prettier": "prettier --cache --write .",
-    "prettier:verify": "prettier --cache --check .",
-    "pretest": "npm run lint",
-    "sanity-check": "npm run lint && npm run prettier:verify && npm run type-check && npm run build && es-check && npm run docs && npm run test:unit",
-    "start": "npm run dev",
-    "test": "npm run test:unit && npm run test:func",
-    "test:types": "tsc --project tests/integration/dist-types",
-    "test:unit": "karma start karma.conf.js",
-    "test:unit:debug": "DEBUG_UNIT_TESTS=1 karma start karma.conf.js --auto-watch --no-single-run --browsers Chrome",
-    "test:unit:watch": "karma start karma.conf.js --auto-watch --no-single-run",
-    "test:func": "BABEL_ENV=development mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
-    "test:func:light": "BABEL_ENV=development HLSJS_LIGHT=1 mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
-    "test:func:sauce": "SAUCE=1 UA=safari OS='OS X 10.15' BABEL_ENV=development mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
-    "test:func:browserstack": "BROWSERSTACK=1 UA=safari OS='macOS 15' BABEL_ENV=development mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
-    "test:func:android": "BROWSERSTACK=1 UA=chrome DEVICE='Samsung Galaxy S24' OS='Android 14' BABEL_ENV=development mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
-    "test:func:android:tablet": "BROWSERSTACK=1 UA=chrome DEVICE='Samsung Galaxy Tab S9' OS='Android 13' BABEL_ENV=development mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
-    "test:func:ios": "BROWSERSTACK=1 UA=safari DEVICE='iPhone 16' OS='iOS 18' BABEL_ENV=development mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
-    "test:func:ipad": "BROWSERSTACK=1 UA=safari DEVICE='iPad Pro 12.9 2022' OS='iOS 16' BABEL_ENV=development mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
-    "type-check": "tsc --noEmit",
-    "type-check:watch": "npm run type-check -- --watch",
-    "prepare": "husky"
-  },
+  "description": "JavaScript HLS client using MediaSourceExtension",
   "devDependencies": {
     "@babel/core": "7.29.7",
     "@babel/helper-module-imports": "7.29.7",
@@ -147,5 +79,76 @@
     "typescript": "5.9.3",
     "url-toolkit": "2.2.5",
     "wrangler": "4.128.0"
-  }
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/hls.mjs",
+      "require": "./dist/hls.js"
+    },
+    "./dist/*": "./dist/*",
+    "./light": {
+      "import": "./dist/hls.light.mjs",
+      "require": "./dist/hls.light.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.aphrody.md"
+  ],
+  "homepage": "https://github.com/video-dev/hls.js",
+  "license": "Apache-2.0",
+  "main": "./dist/hls.js",
+  "module": "./dist/hls.mjs",
+  "name": "@aphrody/hls.js",
+  "publishConfig": {
+    "access": "public",
+    "tag": "aphrody"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aphrody-labs/hls.js"
+  },
+  "scripts": {
+    "build": "bun scripts/bun-run.js rollup --config --configType full --configType fullMin --configType fullEsm --configType fullEsmMin --configType light --configType lightMin --configType lightEsm --configType lightEsmMin --configType worker && bun run build:types",
+    "build:ci": "bun scripts/bun-run.js rollup --config --configType full --configType fullMin --configType fullEsm --configType fullEsmMin --configType light --configType lightMin --configType lightEsm --configType lightEsmMin --configType worker && bun run build:types",
+    "build:copy-types": "bun scripts/bun-run.js copy-types",
+    "build:debug": "bun scripts/bun-run.js rollup --config --configType full --configType demo",
+    "build:types": "bun scripts/bun-run.js tsc --build tsconfig-lib.json && bun scripts/bun-run.js api run --local && bun run build:copy-types",
+    "build:watch": "bun scripts/bun-run.js rollup --config --configType full --configType demo --watch",
+    "dev": "bun run --parallel build:watch serve",
+    "docs": "bun scripts/bun-run.js doctoc ./docs/API.md && bun scripts/bun-run.js apiDocumenter markdown -i api-extractor -o api-extractor/api-documenter && bun -e \"await Bun.file('api-extractor/api-documenter/index.md').delete()\" && bun run docs-md-to-html",
+    "docs-md-to-html": "bun scripts/bun-run.js generateMd --layout github --input api-extractor/api-documenter --output api-docs",
+    "lint": "bun scripts/bun-run.js eslint --cache src/ tests/ --ext .js --ext .ts",
+    "lint:fix": "bun run lint -- --fix",
+    "lint:quiet": "bun run lint -- --quiet",
+    "lint:staged": "bun scripts/bun-run.js lintStaged",
+    "prepare": "bun -e \"void 0\"",
+    "pretest": "bun run lint",
+    "prettier": "bun scripts/bun-run.js prettier --cache --write .",
+    "prettier:verify": "bun scripts/bun-run.js prettier --cache --check .",
+    "sanity-check": "bun run lint && bun run prettier:verify && bun run type-check && bun run build && bun scripts/bun-run.js esCheck && bun run docs && bun run test:unit",
+    "serve": "bun scripts/bun-run.js httpServer -o /demo .",
+    "size": "bun ./scripts/dist-size.js",
+    "size:check": "bun ./scripts/dist-size.js --check",
+    "start": "bun run dev",
+    "test": "bun run test:unit && bun run test:func",
+    "test:func": "BABEL_ENV=development bun scripts/bun-run.js mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
+    "test:func:android": "BROWSERSTACK=1 UA=chrome DEVICE='Samsung Galaxy S24' OS='Android 14' BABEL_ENV=development bun scripts/bun-run.js mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
+    "test:func:android:tablet": "BROWSERSTACK=1 UA=chrome DEVICE='Samsung Galaxy Tab S9' OS='Android 13' BABEL_ENV=development bun scripts/bun-run.js mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
+    "test:func:browserstack": "BROWSERSTACK=1 UA=safari OS='macOS 15' BABEL_ENV=development bun scripts/bun-run.js mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
+    "test:func:ios": "BROWSERSTACK=1 UA=safari DEVICE='iPhone 16' OS='iOS 18' BABEL_ENV=development bun scripts/bun-run.js mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
+    "test:func:ipad": "BROWSERSTACK=1 UA=safari DEVICE='iPad Pro 12.9 2022' OS='iOS 16' BABEL_ENV=development bun scripts/bun-run.js mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
+    "test:func:light": "BABEL_ENV=development HLSJS_LIGHT=1 bun scripts/bun-run.js mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
+    "test:func:sauce": "SAUCE=1 UA=safari OS='OS X 10.15' BABEL_ENV=development bun scripts/bun-run.js mocha --require @babel/register tests/functional/auto/setup.js --timeout 40000 --exit",
+    "test:types": "bun scripts/bun-run.js tsc --project tests/integration/dist-types",
+    "test:unit": "bun scripts/bun-unit-bundle.js && bun scripts/bun-browser-tests.js",
+    "test:unit:debug": "DEBUG_UNIT_TESTS=1 bun scripts/bun-run.js karma start karma.conf.js --auto-watch --no-single-run --browsers Chrome",
+    "test:unit:watch": "bun scripts/bun-run.js karma start karma.conf.js --auto-watch --no-single-run",
+    "type-check": "bun scripts/bun-run.js tsc --noEmit",
+    "type-check:watch": "bun run type-check -- --watch"
+  },
+  "types": "./dist/hls.d.ts",
+  "version": "1.7.3-aphrody.1"
 }

@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /* eslint-disable no-console */
 /* eslint-env node */
 'use strict';
@@ -10,9 +10,9 @@
  * Limits are compared against brotli size, which is what CDNs serve.
  */
 
-const fs = require('fs');
-const path = require('path');
-const zlib = require('zlib');
+const fs = require('node:fs');
+const path = require('node:path');
+const zlib = require('node:zlib');
 
 const ROOT = path.resolve(__dirname, '..');
 const BUDGET_FILE = path.join(ROOT, 'dist-size-budget.json');

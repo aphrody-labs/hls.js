@@ -1,7 +1,7 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 
-const fs = require('fs'),
-  path = require('path');
+const fs = require('node:fs'),
+  path = require('node:path');
 
 var folderName = process.argv[2];
 

@@ -21,7 +21,7 @@
  * all. Upstream has had no release since June 2022.
  */
 
-const path = require('path');
+const path = require('node:path');
 const rollup = require('rollup');
 const chokidar = require('chokidar');
 const debounce = require('debounce');

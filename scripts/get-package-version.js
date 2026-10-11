@@ -109,7 +109,7 @@ function hasTag(tag) {
 }
 
 function exec(cmd) {
-  return require('child_process')
+  return require('node:child_process')
     .execSync(cmd, { stdio: 'pipe' })
     .toString()
     .trim();

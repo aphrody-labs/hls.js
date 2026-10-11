@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('node:path');
 const importHelper = require('@babel/helper-module-imports');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
@@ -7,7 +7,7 @@ const alias = require('@rollup/plugin-alias');
 const replace = require('@rollup/plugin-replace');
 const terser = require('@rollup/plugin-terser');
 const istanbul = require('rollup-plugin-istanbul');
-const fs = require('fs');
+const fs = require('node:fs');
 
 const pkgJson = JSON.parse(
   fs.readFileSync('./package.json', { encoding: 'utf-8' }),
@@ -379,7 +379,7 @@ const buildRollupConfig = ({
       ...(format === 'esm'
         ? [buildBabelEsm({ stripConsole: true })]
         : [buildBabelLegacyBrowsers({ stripConsole: true })]),
-      ...(minified ? [terser()] : []),
+      ...(minified ? [terser({ maxWorkers: 2 })] : []),
       ...(includeCoverage
         ? [istanbul({ exclude: ['tests/**/*', 'node_modules/**/*'] })]
         : []),
@@ -450,7 +450,7 @@ const configs = Object.entries({
         }),
       ),
       buildBabelLegacyBrowsers({ stripConsole: true }),
-      terser(),
+      terser({ maxWorkers: 2 }),
     ],
   },
   demo: {
