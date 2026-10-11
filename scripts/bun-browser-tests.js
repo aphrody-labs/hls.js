@@ -45,6 +45,7 @@ try {
     [
       chrome,
       `--user-data-dir=${profile}`,
+      ...(process.env.IN_DEV_CONTAINER === 'true' ? ['--no-sandbox'] : []),
       '--headless',
       '--disable-gpu',
       '--disable-dev-shm-usage',

@@ -8,7 +8,17 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-latest
+    container:
+      image: ubuntu:26.10@sha256:ee126c2fa0249079a7e24ae3a3d29b04783ef93ab33c868751c9a1289d3fffff
     steps:
+      - name: Install isolated browser dependencies
+        run: |
+          apt-get update
+          apt-get install -y ca-certificates curl unzip git
+          curl -fsSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o /tmp/chrome.deb
+          sha256sum /tmp/chrome.deb
+          apt-get install -y /tmp/chrome.deb
+          google-chrome --version
       - uses: actions/checkout@v7
       - name: Install Aphrody Bun runtime
         run: |
@@ -30,6 +40,7 @@ jobs:
         run: bun run test:unit
         env:
           CI: true
+          IN_DEV_CONTAINER: 'true'
       - uses: actions/upload-artifact@v4
         with:
           name: hls-aphrody-dist
